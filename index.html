@@ -18,7 +18,7 @@
   --line-2: rgba(219, 228, 240, .09);
   --head: "Playfair Display", Georgia, "Times New Roman", serif;
   --text: "Spectral", Georgia, "Times New Roman", serif;
-  --max: 1000px;
+  --max: 1120px;
   --gutter: clamp(16px, 5vw, 48px);
   color-scheme: dark;
 }
@@ -46,8 +46,8 @@ h1, h2, h3 {
 p, td, th, footer {
   font-family: var(--text);
   font-weight: 400;
-  font-size: 17px;
-  line-height: 1.6;
+  font-size: 20px;
+  line-height: 1.55;
   font-variant-numeric: lining-nums;
 }
 
@@ -88,7 +88,7 @@ header > *:nth-child(2) { animation-delay: .1s; }
 
 /* phone: each row becomes a stacked entry */
 @media (max-width: 680px) {
-  p, td, th, footer { font-size: 16px; }
+  p, td, th, footer { font-size: 18px; }
   .table thead { display: none; }
   .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
   .table tr { padding: 14px 0; border-bottom: 1px solid var(--line-2); }
