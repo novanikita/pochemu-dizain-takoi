@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Источники · Почему дизайн такой</title>
-<meta name="description" content="Факты и цифры выступления «Почему дизайн такой» со ссылками на открытые страницы.">
+<title>Почему в России такой дизайн. Источники</title>
+<meta name="description" content="Факты, которые Никита Нова использовала в выступлении «Почему в России такой дизайн», и дополнительные данные со ссылками на источники.">
 <meta name="theme-color" content="#000000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,7 +62,9 @@ a:hover { text-decoration-color: var(--fg); }
   padding-inline: var(--gutter);
   padding-block: calc(clamp(56px, 10vw, 104px) + env(safe-area-inset-top, 0px)) calc(56px + env(safe-area-inset-bottom, 0px));
 }
-header { display: grid; gap: 10px; padding-bottom: 40px; border-bottom: 1px solid var(--line); }
+header { display: grid; gap: 8px; }
+header h1 { font-size: clamp(44px, 8.4vw, 116px); line-height: 1.02; letter-spacing: -.02em; margin-bottom: 24px; max-width: 14ch; }
+header + section { padding-top: clamp(96px, 13vw, 168px); }
 header p { margin: 0; max-width: 46ch; }
 
 section { padding-top: 72px; }
@@ -84,6 +86,7 @@ footer { margin-top: 88px; padding-top: 16px; border-top: 1px solid var(--line);
 @keyframes up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 header > * { animation: up .9s cubic-bezier(.2, .7, .2, 1) both; }
 header > *:nth-child(2) { animation-delay: .1s; }
+header > *:nth-child(3) { animation-delay: .18s; }
 .table tbody tr { animation: up .8s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(.3s + var(--i, 0) * .05s); }
 
 /* phone: each row becomes a stacked entry */
@@ -107,8 +110,9 @@ header > *:nth-child(2) { animation-delay: .1s; }
 <div class="page">
 
   <header>
-    <h1>Источники</h1>
+    <h1>Почему в России такой дизайн. Источники</h1>
     <p>Факты, которые я использовала в выступлении, и немного дополнительной информации</p>
+    <p>Никита Нова · <a href="https://t.me/nikitanova" target="_blank" rel="noopener">t.me/nikitanova</a></p>
   </header>
 
   <section id="b1">
@@ -213,7 +217,7 @@ header > *:nth-child(2) { animation-delay: .1s; }
   </section>
 
   <footer>
-    <span>Источники к выступлению «Почему дизайн такой» · 4 октября 2026</span>
+    <span>Почему в России такой дизайн · Никита Нова · 4 октября 2026</span>
     <a href="#">Наверх ↑</a>
   </footer>
 </div>
