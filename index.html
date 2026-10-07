@@ -1,0 +1,997 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Почему дизайн такой</title>
+<meta name="description" content="Факты и цифры выступления «Почему дизайн такой» со ссылками на открытые источники.">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap&subset=cyrillic">
+<style>
+/* Layout: editorial single column on black; stage facts as wide numbered rows, research as sticky-topic index. */
+:root {
+  --bg: #000000;
+  --fg: #DBE4F0;
+  --fg-2: #9AA3B2;
+  --fg-3: #5E6672;
+  --line: rgba(219, 228, 240, .14);
+  --line-2: rgba(219, 228, 240, .07);
+  --glow: rgba(150, 175, 215, .16);
+  --c-cost: #5A7FC8;
+  --c-mkt: #C2823C;
+  --c-other: #9070D2;
+  --c-profit: #25A090;
+  --serif: "Playfair Display", "Playfair", Georgia, "Times New Roman", serif;
+  --t-xs: 12px;
+  --t-sm: 15px;
+  --t-md: 18px;
+  --t-lg: clamp(20px, 2vw, 24px);
+  --t-xl: clamp(28px, 3.4vw, 44px);
+  --t-2xl: clamp(40px, 6vw, 80px);
+  --t-hero: clamp(64px, 14.5vw, 232px);
+  --gutter: clamp(16px, 4.5vw, 64px);
+  --max: 1320px;
+  --ease: cubic-bezier(.2, .7, .1, 1);
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 120px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--serif);
+  font-size: var(--t-md);
+  line-height: 1.6;
+  font-variant-numeric: lining-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+img { max-width: 100%; }
+a { color: inherit; }
+::selection { background: var(--fg); color: var(--bg); }
+:focus-visible { outline: 1px solid var(--fg); outline-offset: 4px; border-radius: 2px; }
+[hidden] { display: none !important; }
+
+.wrap { max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+.label {
+  font-size: var(--t-xs);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  font-weight: 500;
+}
+.num { font-variant-numeric: lining-nums tabular-nums; }
+
+/* ---------- atmosphere ---------- */
+.grain {
+  position: fixed; inset: -50%; z-index: 100; pointer-events: none; opacity: .07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); } 20% { transform: translate(-3%, 2%); } 40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); } 80% { transform: translate(3%, 3%); } 100% { transform: translate(0, 0); }
+}
+.spot {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(600px circle at var(--mx, 70%) var(--my, 20%), var(--glow), transparent 60%);
+  transition: opacity .6s;
+}
+.progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 1px; z-index: 60;
+  background: var(--fg); transform-origin: 0 50%; transform: scaleX(var(--p, 0));
+}
+
+/* ---------- header ---------- */
+.top {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  padding-top: env(safe-area-inset-top, 0px);
+  background: linear-gradient(to bottom, rgba(0,0,0,.85), rgba(0,0,0,0));
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  transition: transform .5s var(--ease);
+}
+.top.is-hidden { transform: translateY(-100%); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 64px; }
+.brand { font-style: italic; font-size: var(--t-md); text-decoration: none; white-space: nowrap; }
+.brand span { font-style: normal; color: var(--fg-3); margin-inline: .5em; }
+.top nav { display: flex; gap: clamp(16px, 2.5vw, 36px); }
+.top nav a { text-decoration: none; font-size: var(--t-sm); color: var(--fg-2); position: relative; transition: color .3s; }
+.top nav a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px; background: var(--fg);
+  transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease);
+}
+.top nav a:hover { color: var(--fg); }
+.top nav a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* ---------- hero ---------- */
+.hero { position: relative; z-index: 1; padding-block: clamp(120px, 18vh, 200px) clamp(64px, 10vw, 140px); overflow: hidden; }
+.aurora { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.aurora i {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: .5;
+  background: radial-gradient(circle, rgba(140, 165, 205, .35), transparent 65%);
+}
+.aurora i:nth-child(1) { width: 60vw; height: 60vw; left: 45%; top: -25%; animation: drift1 26s ease-in-out infinite alternate; }
+.aurora i:nth-child(2) { width: 45vw; height: 45vw; left: -10%; top: 35%; opacity: .28; animation: drift2 32s ease-in-out infinite alternate; }
+@keyframes drift1 { to { transform: translate(-14vw, 10vh) scale(1.15); } }
+@keyframes drift2 { to { transform: translate(18vw, -8vh) scale(.9); } }
+
+.hero-meta { display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: baseline; }
+.hero h1 {
+  margin: clamp(24px, 4vw, 48px) 0 0;
+  font-size: var(--t-hero);
+  font-weight: 400;
+  line-height: .9;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+.hero h1 .ln { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.hero h1 .w { display: inline-block; animation: rise 1.4s var(--ease) both; }
+.hero h1 .ln:nth-child(2) .w { animation-delay: .14s; }
+.hero h1 .ln:nth-child(3) .w { animation-delay: .28s; }
+.hero h1 em { font-style: italic; font-weight: 400; padding-right: .06em; }
+.hero h1 .ln:nth-child(2) { padding-left: clamp(0px, 9vw, 160px); }
+.hero h1 .ln:nth-child(3) { text-align: right; }
+@keyframes rise { from { transform: translateY(105%) rotate(2deg); } to { transform: none; } }
+
+.hero-foot {
+  margin-top: clamp(40px, 7vw, 96px);
+  display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px clamp(32px, 6vw, 96px);
+  align-items: end;
+}
+.lede { font-size: var(--t-lg); line-height: 1.5; max-width: 34ch; margin: 0; color: var(--fg); animation: fade 1.6s .7s var(--ease) both; }
+.lede em { color: var(--fg-2); }
+.hero-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); animation: fade 1.6s .9s var(--ease) both; }
+.hero-stats div { padding: 16px 12px 0 0; display: grid; gap: 4px; min-width: 0; }
+.hero-stats b { font-size: var(--t-xl); font-weight: 400; line-height: 1; }
+.hero-stats span { font-size: var(--t-sm); color: var(--fg-2); line-height: 1.3; }
+@keyframes fade { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+.marquee {
+  position: relative; z-index: 1; border-block: 1px solid var(--line); overflow: hidden;
+  padding-block: 18px; white-space: nowrap; font-style: italic; font-size: var(--t-lg); color: var(--fg-2);
+}
+.marquee-track { display: inline-flex; gap: 48px; animation: marquee 60s linear infinite; padding-left: 48px; }
+.marquee-track span::after { content: "✦"; font-style: normal; font-size: .6em; margin-left: 48px; color: var(--fg-3); vertical-align: middle; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ---------- sections ---------- */
+section { position: relative; z-index: 1; }
+.sec-head {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px clamp(32px, 6vw, 96px);
+  padding-block: clamp(80px, 12vw, 160px) clamp(40px, 6vw, 72px); align-items: end;
+}
+.sec-head h2 {
+  margin: 12px 0 0; font-size: var(--t-2xl); font-weight: 400; line-height: 1; letter-spacing: -.025em; text-wrap: balance;
+}
+.sec-head h2 em { font-style: italic; }
+.sec-head p { margin: 0; color: var(--fg-2); max-width: 46ch; }
+
+/* stage facts */
+.stage { list-style: none; margin: 0; padding: 0; counter-reset: f; }
+.fact {
+  position: relative;
+  display: grid; grid-template-columns: 72px minmax(0, 1.05fr) minmax(0, 1.2fr);
+  gap: 24px clamp(24px, 4vw, 64px);
+  padding-block: clamp(40px, 6vw, 80px);
+}
+.fact::before, .research-group::before, .topic::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--line);
+  transform-origin: 0 50%;
+}
+.fact-no { font-style: italic; font-size: var(--t-lg); color: var(--fg-3); padding-top: .6em; }
+.figure { display: grid; align-content: start; gap: 12px; min-width: 0; }
+.big {
+  font-size: clamp(72px, 10.5vw, 168px); line-height: .85; letter-spacing: -.04em; font-weight: 400;
+  font-variant-numeric: lining-nums tabular-nums; white-space: nowrap;
+}
+.big sup { font-size: .32em; letter-spacing: 0; vertical-align: top; margin-left: .12em; position: relative; top: .3em; font-style: italic; }
+.big .arrow { font-size: .45em; vertical-align: middle; color: var(--fg-3); margin-inline: .12em; font-style: italic; }
+.big.duo { font-size: clamp(56px, 7.6vw, 120px); white-space: normal; }
+.big.duo > span { white-space: nowrap; }
+.figure .label { max-width: 30ch; line-height: 1.6; }
+.fact-body { min-width: 0; display: grid; gap: 18px; align-content: start; }
+.fact-body h3 { margin: 0; font-size: var(--t-xl); font-weight: 400; line-height: 1.15; letter-spacing: -.01em; text-wrap: balance; }
+.fact-body p { margin: 0; color: var(--fg-2); max-width: 62ch; }
+.fact-body p strong { color: var(--fg); font-weight: 500; }
+
+.mini { display: grid; gap: 10px; margin-top: 4px; max-width: 520px; }
+.mini-row { display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; gap: 14px; align-items: center; font-size: var(--t-sm); }
+.mini-row .yr { color: var(--fg-2); }
+.mini-row .v { text-align: right; }
+.mini-bar { height: 10px; background: var(--line-2); border-radius: 0 4px 4px 0; overflow: hidden; }
+.mini-bar i { display: block; height: 100%; background: var(--fg); border-radius: 0 4px 4px 0; transform-origin: 0 50%; }
+.mini-bar.dim i { background: var(--fg-3); }
+
+.src { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 4px 0 0; list-style: none; }
+.src a {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: var(--t-sm); text-decoration: none; padding: 7px 14px 8px;
+  border: 1px solid var(--line); border-radius: 999px; color: var(--fg);
+  transition: background .35s var(--ease), color .35s var(--ease), border-color .35s;
+}
+.src a::after { content: "↗"; font-size: .85em; color: var(--fg-3); transition: transform .35s var(--ease), color .35s; }
+.src a:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.src a:hover::after { transform: translate(2px, -2px); color: var(--bg); }
+
+/* ---------- interlude: 20x ---------- */
+.versus { padding-block: clamp(96px, 14vw, 200px); }
+.versus-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 48px clamp(32px, 6vw, 96px); align-items: center; }
+.versus .times { font-size: clamp(120px, 22vw, 340px); line-height: .8; letter-spacing: -.05em; font-style: italic; margin: 0; }
+.versus .times small { font-size: .3em; font-style: normal; letter-spacing: 0; color: var(--fg-2); margin-left: .1em; }
+.versus-bars { display: grid; gap: 28px; }
+.vbar { display: grid; gap: 10px; }
+.vbar-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.vbar-top b { font-size: var(--t-xl); font-weight: 400; white-space: nowrap; }
+.vbar-top span { color: var(--fg-2); font-size: var(--t-sm); }
+.vbar-track { height: 56px; position: relative; }
+.vbar-track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--fg); border-radius: 0 4px 4px 0; transform-origin: 0 50%; }
+.vbar-track.ru i { background: var(--fg-2); min-width: 3px; }
+.vbar-track::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--line-2); z-index: -1; }
+.versus .note { color: var(--fg-3); font-size: var(--t-sm); margin: 8px 0 0; }
+
+/* ---------- revenue chart ---------- */
+.chart-block { padding-block: 0 clamp(80px, 10vw, 140px); }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 0 0 32px; padding: 0; list-style: none; font-size: var(--t-sm); color: var(--fg-2); }
+.legend li { display: inline-flex; align-items: center; gap: 10px; }
+.legend i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+.rev { display: grid; gap: 28px; }
+.rev-row { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 12px 32px; align-items: center; }
+.rev-name { display: grid; gap: 2px; }
+.rev-name b { font-weight: 400; font-size: var(--t-lg); line-height: 1.1; }
+.rev-name span { font-size: var(--t-sm); color: var(--fg-2); }
+.rev-bar { display: flex; gap: 2px; height: 48px; min-width: 0; }
+.seg {
+  position: relative; height: 100%; display: flex; align-items: center; padding-left: 10px;
+  font-size: var(--t-sm); color: #000; white-space: nowrap; overflow: hidden; cursor: default;
+  transform-origin: 0 50%; transition: filter .3s, opacity .3s;
+}
+.seg:first-child { border-radius: 4px 0 0 4px; }
+.seg:last-child { border-radius: 0 4px 4px 0; }
+.seg[data-k="cost"] { background: var(--c-cost); }
+.seg[data-k="mkt"] { background: var(--c-mkt); }
+.seg[data-k="other"] { background: var(--c-other); }
+.seg[data-k="profit"] { background: var(--c-profit); }
+.seg.narrow { padding: 0; }
+.seg.narrow span { display: none; }
+.rev:hover .seg { opacity: .45; }
+.rev .seg:hover, .rev .seg.is-on { opacity: 1; filter: brightness(1.12); }
+.rev-note { grid-column: 2; margin: -4px 0 0; font-size: var(--t-xs); color: var(--fg-3); letter-spacing: .04em; }
+.axis { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; margin-top: 14px; }
+.axis-ticks { position: relative; height: 18px; font-size: var(--t-xs); color: var(--fg-3); }
+.axis-ticks span { position: absolute; transform: translateX(-50%); }
+.axis-ticks span:first-child { transform: none; }
+.axis-ticks span:last-child { transform: translateX(-100%); }
+.chart-cap { margin-top: 36px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px clamp(32px, 6vw, 96px); color: var(--fg-2); font-size: var(--t-sm); }
+.chart-cap p { margin: 0; }
+.chart-cap strong { color: var(--fg); font-weight: 500; }
+
+details.table { margin-top: 32px; border-top: 1px solid var(--line); }
+details.table summary { cursor: pointer; padding-block: 16px; color: var(--fg-2); font-size: var(--t-sm); list-style: none; }
+details.table summary::-webkit-details-marker { display: none; }
+details.table summary::before { content: "+"; display: inline-block; width: 1.4em; transition: transform .3s; }
+details.table[open] summary::before { transform: rotate(45deg); }
+.tscroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: var(--t-sm); font-variant-numeric: lining-nums tabular-nums; }
+th, td { text-align: right; padding: 10px 12px; border-bottom: 1px solid var(--line-2); }
+th:first-child, td:first-child { text-align: left; padding-left: 0; }
+th { font-weight: 500; color: var(--fg-2); font-size: var(--t-xs); letter-spacing: .1em; text-transform: uppercase; }
+
+.tip {
+  position: fixed; z-index: 80; pointer-events: none; max-width: 260px;
+  background: rgba(10, 12, 16, .92); border: 1px solid var(--line); border-radius: 6px;
+  padding: 10px 14px; font-size: var(--t-sm); line-height: 1.4; color: var(--fg);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  opacity: 0; transform: translateY(6px); transition: opacity .2s, transform .2s;
+}
+.tip.on { opacity: 1; transform: none; }
+.tip b { font-weight: 500; display: block; }
+.tip span { color: var(--fg-2); }
+
+/* ---------- research ---------- */
+.chips-bar {
+  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 0px); z-index: 40;
+  background: rgba(0, 0, 0, .82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line-2);
+}
+.chips { display: flex; gap: 8px; overflow-x: auto; padding-block: 14px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chips a {
+  flex: none; text-decoration: none; font-size: var(--t-sm); padding: 6px 14px 7px; border-radius: 999px;
+  color: var(--fg-2); border: 1px solid transparent; transition: color .3s, border-color .3s, background .3s;
+}
+.chips a:hover { color: var(--fg); }
+.chips a.is-on { color: var(--bg); background: var(--fg); }
+
+.topic { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); gap: 24px clamp(32px, 6vw, 96px); padding-block: clamp(56px, 7vw, 96px); }
+.topic-head { align-self: start; position: sticky; top: 140px; display: grid; gap: 14px; }
+.topic-head h3 { margin: 0; font-size: var(--t-xl); font-weight: 400; line-height: 1.1; letter-spacing: -.01em; }
+.topic-head h3 em { font-style: italic; color: var(--fg-2); }
+.topic-head .count { color: var(--fg-3); font-size: var(--t-sm); font-style: italic; }
+.rows { list-style: none; margin: 0; padding: 0; min-width: 0; }
+.row {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 220px); gap: 12px 32px;
+  padding-block: 22px; border-bottom: 1px solid var(--line-2);
+}
+.row:first-child { padding-top: 0; }
+.row p { margin: 0; max-width: 64ch; }
+.row .src { margin: 0; flex-direction: column; align-items: flex-start; gap: 6px; }
+.row .src a { border: 0; padding: 0; border-radius: 0; color: var(--fg-2); background: none; font-size: var(--t-sm); line-height: 1.35; }
+.row .src a:hover { color: var(--fg); background: none; }
+.row .src a:hover::after { color: var(--fg); }
+.row .src .ref { color: var(--fg-3); font-size: var(--t-sm); font-style: italic; }
+.row::before {
+  content: ""; position: absolute; left: calc(-1 * clamp(14px, 2vw, 28px)); top: 30px; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--fg); opacity: 0; transform: scale(0); transition: opacity .3s, transform .4s var(--ease);
+}
+.row:first-child::before { top: 8px; }
+.row:hover::before { opacity: 1; transform: none; }
+
+.export-chart { margin-top: 36px; }
+.cols { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; align-items: end; height: 220px; border-bottom: 1px solid var(--line); }
+.col { position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; height: 100%; cursor: default; }
+.col i { display: block; background: var(--fg-3); border-radius: 4px 4px 0 0; transform-origin: 50% 100%; transition: background .3s; }
+.col.peak i { background: var(--fg); }
+.col:hover i { background: var(--fg-2); }
+.col.peak:hover i { background: var(--fg); }
+.col b { font-weight: 400; font-size: var(--t-sm); text-align: center; margin-bottom: 8px; }
+.col-x { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; margin-top: 10px; font-size: var(--t-sm); color: var(--fg-2); text-align: center; }
+.export-chart .cap { margin: 14px 0 0; font-size: var(--t-sm); color: var(--fg-3); }
+
+/* ---------- footer ---------- */
+footer { position: relative; z-index: 1; padding-block: clamp(96px, 14vw, 200px) calc(48px + env(safe-area-inset-bottom, 0px)); }
+.outro { font-size: clamp(48px, 9vw, 150px); line-height: .95; letter-spacing: -.035em; margin: 0; font-weight: 400; text-wrap: balance; }
+.outro em { font-style: italic; }
+.foot-row { margin-top: clamp(48px, 7vw, 96px); padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; color: var(--fg-2); font-size: var(--t-sm); }
+.foot-row a { text-decoration: none; }
+.foot-row a:hover { color: var(--fg); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .fact { grid-template-columns: 48px minmax(0, 1fr); }
+  .fact-body { grid-column: 2; }
+  .hero-foot, .sec-head, .versus-grid, .chart-cap { grid-template-columns: minmax(0, 1fr); }
+  .topic { grid-template-columns: minmax(0, 1fr); }
+  .topic-head { position: static; }
+  .rev-row, .axis { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .rev-note { grid-column: 1; }
+  .axis > span { display: none; }
+}
+@media (max-width: 640px) {
+  :root { --t-md: 17px; }
+  .top nav { display: none; }
+  .hero { padding-block: 112px 56px; }
+  .hero h1 .ln:nth-child(2) { padding-left: .5em; }
+  .hero-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hero-stats b { font-size: 30px; }
+  .hero-stats span { font-size: 13px; }
+  .fact { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .fact-no { padding-top: 0; }
+  .fact-body { grid-column: 1; }
+  .big { font-size: clamp(64px, 21vw, 120px); }
+  .big.duo { font-size: clamp(44px, 13vw, 80px); }
+  .row { grid-template-columns: minmax(0, 1fr); }
+  .row::before { display: none; }
+  .rev-bar { height: 40px; }
+  .seg { font-size: 13px; padding-left: 6px; }
+  .cols { height: 170px; }
+  .col b { font-size: 13px; }
+  .mini-row { grid-template-columns: 48px minmax(0, 1fr) 52px; gap: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  html { scroll-behavior: auto; }
+  .grain, .spot { display: none; }
+}
+@media (hover: none) { .spot { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="spot" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">Почему дизайн такой<span>/</span>Источники</a>
+    <nav aria-label="Разделы">
+      <a href="#stage">Со сцены</a>
+      <a href="#versus">Разрыв</a>
+      <a href="#budgets">Бюджеты</a>
+      <a href="#research">Исследование</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="aurora" aria-hidden="true"><i></i><i></i></div>
+    <div class="wrap">
+      <div class="hero-meta">
+        <span class="label">Источники к выступлению</span>
+        <span class="label">4 октября 2026</span>
+      </div>
+      <h1>
+        <span class="ln"><span class="w">Почему</span></span>
+        <span class="ln"><span class="w">дизайн</span></span>
+        <span class="ln"><span class="w"><em>такой</em></span></span>
+      </h1>
+      <div class="hero-foot">
+        <p class="lede">Факты и цифры выступления со ссылками на открытые страницы. <em>Пять фактов звучат со сцены, остальное — опорные данные исследования.</em></p>
+        <div class="hero-stats">
+          <div><b class="num">5</b><span>фактов со&nbsp;сцены</span></div>
+          <div><b class="num">32</b><span>факта исследования</span></div>
+          <div><b class="num">5</b><span>тем: Корея, банки, косметика, экспорт, бюджеты</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Корея — 2-е место в мире по экспорту косметики</span>
+      <span>Маркетинг — 7,7% выручки</span>
+      <span>1 100 → 3 000 российских брендов</span>
+      <span>10 мая 1961</span>
+      <span>Разница в 20 раз</span>
+      <span>Корея — 2-е место в мире по экспорту косметики</span>
+      <span>Маркетинг — 7,7% выручки</span>
+      <span>1 100 → 3 000 российских брендов</span>
+      <span>10 мая 1961</span>
+      <span>Разница в 20 раз</span>
+    </div>
+  </div>
+
+  <!-- BLOCK 1 -->
+  <section id="stage">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <span class="label">Блок 1</span>
+          <h2>То, что звучит <em>со&nbsp;сцены</em></h2>
+        </div>
+        <p>Пять фактов в порядке выступления. У каждого есть открытый источник, некоторые подтверждены двумя-тремя независимыми.</p>
+      </div>
+
+      <ol class="stage">
+        <li class="fact">
+          <div class="fact-no">I</div>
+          <div class="figure">
+            <div class="big"><span data-count="11.4" data-dec="1">11,4</span><sup>млрд $</sup></div>
+            <span class="label">экспорт косметики Кореи, 2025</span>
+          </div>
+          <div class="fact-body">
+            <h3>Южная Корея — 2-е место в мире по экспорту косметики после Франции</h3>
+            <p><strong>11,4 млрд $ в 2025, +11,8%</strong>, Корея обогнала США. 202 страны-покупателя. Данные MFDS, май 2026.</p>
+            <ul class="src">
+              <li><a href="https://www.koreabiomed.com/news/articleView.html?idxno=31790" target="_blank" rel="noopener">Korea Biomedical Review</a></li>
+              <li><a href="https://www.upi.com/Top_News/World-News/2026/05/28/korea-korea-global-comsetics-exports/5231779966752/" target="_blank" rel="noopener">UPI</a></li>
+              <li><a href="https://en.reach24h.com/news/insights/cosmetic/south-korea-2025-cosmetics-export-data-insights" target="_blank" rel="noopener">MFDS / REACH24H</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="fact">
+          <div class="fact-no">II</div>
+          <div class="figure">
+            <div class="big"><span data-count="7.7" data-dec="1">7,7</span><sup>%</sup></div>
+            <span class="label">выручки уходит на маркетинг</span>
+          </div>
+          <div class="fact-body">
+            <h3>Маркетинг — 7,7% выручки компании</h3>
+            <p>2025, без изменений к 2024. Опрос <strong>402 CMO</strong> в США, Великобритании и Европе, компании с выручкой выше 1 млрд $. <strong>30,6% бюджета</strong> уходит на закупку рекламы.</p>
+            <ul class="src">
+              <li><a href="https://www.gartner.com/en/newsroom/press-releases/2025-05-12-gartner-2025-cmo-spend-survey-reveals-marketing-budgets-have-flatlined-at-seven-percent-of-overall-company-revenue" target="_blank" rel="noopener">Gartner CMO Spend Survey 2025</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="fact">
+          <div class="fact-no">III</div>
+          <div class="figure">
+            <div class="big"><span data-count="70">70</span><sup>%</sup></div>
+            <span class="label">рынка держали иностранные бренды до 2022</span>
+          </div>
+          <div class="fact-body">
+            <h3>Уход иностранных брендов равен закрытому рынку</h3>
+            <p>Март 2022: L’Oréal закрыл магазины и корнеры, Estée Lauder остановил поставки, Sephora закрыла магазины с 8 марта, Unilever остановил импорт и рекламу. Рынок в 2022 сжался на 14%, цены на импорт выросли на 30–60%, спрос на российскую косметику в «Лэтуаль» — <strong>+184% за год</strong>. Санкции косметику не запрещали, бренды ушли сами.</p>
+            <div class="mini" aria-label="Доля покупок российской косметики">
+              <span class="label">Доля покупок российской косметики, осень 2022</span>
+              <div class="mini-row"><span class="yr">до</span><div class="mini-bar dim"><i style="width:27%"></i></div><span class="v num">27%</span></div>
+              <div class="mini-row"><span class="yr">после</span><div class="mini-bar"><i style="width:39%"></i></div><span class="v num">39%</span></div>
+            </div>
+            <ul class="src">
+              <li><a href="https://www.gcimagazine.com/companies/news/22105888/update-sephora-este-lauder-loral-jj-unilever-cease-operations-in-russia" target="_blank" rel="noopener">GCI Magazine</a></li>
+              <li><a href="https://interfax.com/newsroom/top-stories/75995/" target="_blank" rel="noopener">Interfax</a></li>
+              <li><a href="https://rb.ru/longread/beauty-in-russia-23/" target="_blank" rel="noopener">RB.RU</a></li>
+              <li><a href="https://tass.ru/ekonomika/17242267" target="_blank" rel="noopener">ТАСС</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="fact">
+          <div class="fact-no">IV</div>
+          <div class="figure">
+            <div class="big duo"><span data-count="1100">1&nbsp;100</span><span class="arrow">→</span><span data-count="3000">3&nbsp;000</span></div>
+            <span class="label">российских брендов косметики, 2022 → 2026</span>
+          </div>
+          <div class="fact-body">
+            <h3>Российских брендов косметики стало почти втрое больше</h3>
+            <p>Данные аналитиков «Золотого яблока» о брендах в сети, сентябрь 2026. РПКА подтверждает: <strong>число российских брендов удвоилось</strong> за 2022–2024.</p>
+            <div class="mini" aria-label="Российские бренды в «Золотом яблоке»">
+              <div class="mini-row"><span class="yr num">2022</span><div class="mini-bar dim"><i style="width:36.7%"></i></div><span class="v num">1 100</span></div>
+              <div class="mini-row"><span class="yr num">2026</span><div class="mini-bar"><i style="width:100%"></i></div><span class="v num">3 000</span></div>
+            </div>
+            <ul class="src">
+              <li><a href="https://finance.mail.ru/article/chislo-rossijskih-brendov-kosmetiki-vyroslo-v-tri-raza-s-2022-goda-69225614/" target="_blank" rel="noopener">Финансы Mail</a></li>
+              <li><a href="https://www.sostav.ru/publication/chislo-otechestvennykh-brendov-kosmetiki-vyroslo-v-dva-raza-70620.html" target="_blank" rel="noopener">Sostav</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="fact">
+          <div class="fact-no">V</div>
+          <div class="figure">
+            <div class="big"><span data-count="1961" data-from="1900" data-plain="1">1961</span></div>
+            <span class="label">10 мая — запрет продажи иностранных товаров</span>
+          </div>
+          <div class="fact-body">
+            <h3>Корея, 10 мая 1961: запрет продажи иностранных товаров</h3>
+            <p>Закон о запрете продажи отдельных иностранных товаров: <strong>19 категорий, включая косметику</strong>. Цель — защита своей промышленности и экономия валюты. Закон отменили 31 декабря 1982.</p>
+            <p><em>«Около 1961 корейская косметическая индустрия начала процветать после принятия закона».</em></p>
+            <ul class="src">
+              <li><a href="https://en.namu.wiki/w/%ED%8A%B9%EC%A0%95%EC%99%B8%EB%9E%98%ED%92%88%ED%8C%90%EB%A7%A4%EA%B8%88%EC%A7%80%EB%B2%95" target="_blank" rel="noopener">Namu Wiki: закон и даты</a></li>
+              <li><a href="https://en.wikipedia.org/wiki/Cosmetics_in_Korea" target="_blank" rel="noopener">Wikipedia: Cosmetics in Korea</a></li>
+              <li><a href="https://seoulinstitute.com/how-k-beauty-became-a-global-export-power/" target="_blank" rel="noopener">Seoul Institute</a></li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- INTERLUDE: 20x -->
+  <section id="versus" class="versus">
+    <div class="wrap versus-grid">
+      <div class="reveal">
+        <span class="label">Экспорт косметики</span>
+        <p class="times"><span data-count="20" data-plain="1">20</span><small>раз</small></p>
+      </div>
+      <div class="versus-bars">
+        <div class="vbar reveal">
+          <div class="vbar-top"><b class="num">11,4 млрд $</b><span>Корея, 2025</span></div>
+          <div class="vbar-track"><i class="grow" style="width:100%"></i></div>
+        </div>
+        <div class="vbar reveal">
+          <div class="vbar-top"><b class="num">0,53 млрд $</b><span>Россия, 2023</span></div>
+          <div class="vbar-track ru"><i class="grow" style="width:4.65%"></i></div>
+        </div>
+        <p class="note">Полосы в одном масштабе. Корея — данные MFDS, Россия — РБК Отрасли.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUDGETS CHART -->
+  <section id="budgets" class="chart-block">
+    <div class="wrap">
+      <div class="sec-head reveal" style="padding-top:0">
+        <div>
+          <span class="label">Бюджеты компаний</span>
+          <h2>Куда уходит <em>выручка</em></h2>
+        </div>
+        <p>Структура выручки пяти компаний по годовым отчётам за 2024. Каждая полоса — 100% выручки. Наведите или нажмите на сегмент, чтобы увидеть сумму.</p>
+      </div>
+
+      <ul class="legend">
+        <li><i style="background:var(--c-cost)"></i>Себестоимость</li>
+        <li><i style="background:var(--c-mkt)"></i>Маркетинг и реклама</li>
+        <li><i style="background:var(--c-other)"></i>Прочие расходы (R&amp;D, SG&amp;A)</li>
+        <li><i style="background:var(--c-profit)"></i>Операционная прибыль</li>
+      </ul>
+
+      <div class="rev" id="rev"></div>
+      <div class="axis" aria-hidden="true"><span></span><div class="axis-ticks"><span style="left:0">0%</span><span style="left:25%">25%</span><span style="left:50%">50%</span><span style="left:75%">75%</span><span style="left:100%">100%</span></div></div>
+
+      <div class="chart-cap">
+        <p>Средняя компания тратит на маркетинг <strong>7,7% выручки</strong> (Gartner). L’Oréal — <strong>32,2%</strong>, больше, чем на производство.</p>
+        <p>У P&amp;G и Apple реклама отдельно не раскрыта и входит в SG&amp;A. У Unilever «прочие расходы» и у Nike операционная прибыль — остаток до 100%, посчитанный по цифрам отчёта.</p>
+      </div>
+
+      <details class="table">
+        <summary>Таблица с данными</summary>
+        <div class="tscroll">
+          <table>
+            <thead><tr><th>Компания</th><th>Выручка</th><th>Себестоимость</th><th>Маркетинг</th><th>Прочие расходы</th><th>Опер. прибыль</th><th>Чистая прибыль</th></tr></thead>
+            <tbody id="rev-table"></tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- BLOCK 2 -->
+  <section id="research">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <span class="label">Блок 2</span>
+          <h2>Опорные данные <em>исследования</em></h2>
+        </div>
+        <p>Остальные факты, собранные к выступлению, по темам. Ссылки ведут на первоисточник или на материал, который его пересказывает.</p>
+      </div>
+    </div>
+
+    <div class="chips-bar">
+      <div class="wrap">
+        <nav class="chips" aria-label="Темы исследования">
+          <a href="#t-korea">Корея: косметика</a>
+          <a href="#t-banks">Россия: банки</a>
+          <a href="#t-ru">Россия: косметика</a>
+          <a href="#t-export">Экспорт и макроцифры</a>
+          <a href="#t-design">Бюджеты и ценность дизайна</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <!-- Korea -->
+      <div class="topic" id="t-korea">
+        <div class="topic-head">
+          <h3>Корея: <em>косметика</em></h3>
+          <span class="count">6 фактов</span>
+        </div>
+        <ul class="rows">
+          <li class="row"><p>Экспорт косметики 2025: 11,4 млрд $, +12%, 2-е место в мире после Франции, 202 страны. США 2,2 млрд $, Китай 2,0, Япония 1,1.</p><ul class="src"><li><a href="https://www.koreabiomed.com/news/articleView.html?idxno=31790" target="_blank" rel="noopener">Korea Biomedical Review, май 2026</a></li></ul></li>
+          <li class="row"><p>Производство 2025: 17,9 трлн вон. Брендов (ответственных продавцов) 28 412, производств 4 158.</p><ul class="src"><li><a href="https://en.reach24h.com/news/insights/cosmetic/south-korea-2025-cosmetics-export-data-insights" target="_blank" rel="noopener">MFDS через REACH24H</a></li></ul></li>
+          <li class="row"><p>Продавцов больше 27 000, рост в 7 раз с 2013. 8 800 брендов закрылось за год. Запуск от 20 000 $, партия от 3 000 шт за 3–6 месяцев. Cosmax: 4 500 брендов, 8 000 новых продуктов в год, 26% экспорта, 1,7 млрд $ выручки. Две трети экспорта — малые и средние фирмы.</p><ul class="src"><li><a href="https://www.aol.com/news/secrets-behind-south-korean-cosmetics-100000943.html" target="_blank" rel="noopener">Los Angeles Times через AOL, октябрь 2025</a></li></ul></li>
+          <li class="row"><p>Cosmax и Kolmar — более 1 трлн вон ODM-продаж каждый. Запрет на импорт косметики 1961 (один источник).</p><ul class="src"><li><a href="https://seoulinstitute.com/how-k-beauty-became-a-global-export-power/" target="_blank" rel="noopener">Seoul Institute of Global Affairs</a></li></ul></li>
+          <li class="row"><p>Корейские покупатели — «самые искушённые в мире», Корея — тестовый рынок для Азии.</p><ul class="src"><li><a href="https://www.businessoffashion.com/articles/beauty/why-international-beauty-brands-are-piling-into-south-korea/" target="_blank" rel="noopener">Business of Fashion</a></li></ul></li>
+          <li class="row"><p>5-й рынок в мире, 1-й по тратам на человека.</p><ul class="src"><li><a href="https://beautymatter.com/articles/south-koreas-25-billion-beauty-market" target="_blank" rel="noopener">BeautyMatter</a></li></ul></li>
+        </ul>
+      </div>
+
+      <!-- Banks -->
+      <div class="topic" id="t-banks">
+        <div class="topic-head">
+          <h3>Россия: <em>банки</em></h3>
+          <span class="count">4 факта</span>
+        </div>
+        <ul class="rows">
+          <li class="row"><p>Deloitte Digital Banking Maturity 2020: 318 банков, 39 стран.</p><ul class="src"><li><a href="https://www.deloitte.com/ce/en/industries/financial-services/research/digital-banking-maturity-2020.html" target="_blank" rel="noopener">Deloitte</a></li></ul></li>
+          <li class="row"><p>Россия в десятке стран-лидеров вместе с Японией, Сингапуром и Норвегией. Ни один из 15 российских банков не попал в отстающие.</p><ul class="src"><li><a href="https://ict.moscow/en/news/three-russian-banks-are-among-the-leaders-in-the-deloitte-index-of-banking-services-digitalization/" target="_blank" rel="noopener">ICT.Moscow</a></li></ul></li>
+          <li class="row"><p>Global Finance 2020: Тинькофф — лучший розничный цифровой банк мира, лучшее мобильное приложение, лучший дизайн сайта. 12 млн клиентов, без отделений.</p><ul class="src"><li><a href="https://financialit.net/news/banking/tinkoff-named-worlds-best-consumer-digital-bank-global-finances-digital-bank-awards" target="_blank" rel="noopener">Financial IT</a></li></ul></li>
+          <li class="row"><p>Скоробогатова (ЦБ): банки молодые, рынок прибыльный, инновации рождаются внутри банков. Сбер — треть активов и половина розничных клиентов. СБП работает с января 2019.</p><ul class="src"><li><a href="https://www.euromoney.com/article/b1l0tlv3z9q6d0/banking-russia-makes-its-own-innovation" target="_blank" rel="noopener">Euromoney, 2020</a></li></ul></li>
+        </ul>
+      </div>
+
+      <!-- Russia cosmetics -->
+      <div class="topic" id="t-ru">
+        <div class="topic-head">
+          <h3>Россия: <em>косметика</em></h3>
+          <span class="count">11 фактов</span>
+        </div>
+        <ul class="rows">
+          <li class="row"><p>Рынок 2023: 950 млрд руб, +17%; онлайн 420 млрд, +44%.</p><ul class="src"><li><a href="https://lenta.ru/news/2024/04/16/v-rossii-vyros-rynok-parfyumerii-i-kosmetiki/" target="_blank" rel="noopener">INFOLine через Lenta.ru</a></li></ul></li>
+          <li class="row"><p>Рынок 2024: 1,11 трлн руб, +16,8%; маркетплейсы 31% (20,7% в 2023); производителей вдвое больше за 3 года.</p><ul class="src"><li><a href="https://intercharm.ru/news/tpost/t1al3nr4s1-rossiiskii-kosmeticheskii-rinok-rastyot" target="_blank" rel="noopener">INFOLine через Intercharm</a></li></ul></li>
+          <li class="row"><p>Прогноз 2025: более 1,6 трлн руб; рост по 17–20% в год.</p><ul class="src"><li><a href="https://www.kommersant.ru/doc/8162292" target="_blank" rel="noopener">Коммерсантъ, октябрь 2025</a></li></ul></li>
+          <li class="row"><p>Выручка производителей 2025: 1,16 трлн руб; доля российских брендов 68%; 4 500 компаний (рост в 2–3 раза); 77% потребителей предпочитают отечественное.</p><ul class="src"><li><a href="https://finance.mail.ru/article/vyiruchka-rossijskih-proizvoditelej-kosmetiki-prevyisila-trillion-69207317/" target="_blank" rel="noopener">Финансы Mail, май 2026</a></li></ul></li>
+          <li class="row"><p>Российских брендов в «Золотом яблоке»: 1 100 (2022) → 3 000 (2026); доля на полке: уход 40%, декоративная 38%, волосы 44%; продажи российских брендов удвоились за 2 года.</p><ul class="src"><li><a href="https://finance.mail.ru/article/chislo-rossijskih-brendov-kosmetiki-vyroslo-v-tri-raza-s-2022-goda-69225614/" target="_blank" rel="noopener">Финансы Mail, сентябрь 2026</a></li></ul></li>
+          <li class="row"><p>Ozon: доля российских брендов 33% (2023) → 37% (2024); люксовые российские бренды в «Золотом яблоке» +100% за 2022–2024; МСБ — 97% рынка; в Москве ≈30 фабрик, +20% в год.</p><ul class="src"><li><a href="https://style.rbc.ru/body/68062f8a9a794723e40de43b" target="_blank" rel="noopener">РБК Стиль, апрель 2025</a></li></ul></li>
+          <li class="row"><p>Производителей: ≈1 540 (2019) → ≈2 000 (2024), +30% за 5 лет.</p><ul class="src"><li><a href="https://www.vedomosti.ru/business/articles/2024/10/10/1067734-chislo-rossiiskih-kosmetiki-viroslo" target="_blank" rel="noopener">РПКА через Ведомости</a></li></ul></li>
+          <li class="row"><p>Число российских брендов удвоилось за 2022–2024; всего ≈32 000 марок на рынке; 120 000 новых наименований в 2024.</p><ul class="src"><li><a href="https://www.sostav.ru/publication/chislo-otechestvennykh-brendov-kosmetiki-vyroslo-v-dva-raza-70620.html" target="_blank" rel="noopener">РПКА через Sostav</a></li></ul></li>
+          <li class="row"><p>Январь 2022 → февраль 2023: «Золотое яблоко» брендов +98,5%; «Рив Гош» +100 российских марок, доля до ≈20%; «Лэтуаль» 800 новых брендов, 200 российских.</p><ul class="src"><li><a href="https://tass.ru/ekonomika/17242267" target="_blank" rel="noopener">ТАСС, март 2023</a></li></ul></li>
+          <li class="row"><p>Экспорт косметики: 801,5 млн $ (2021) → 529,4 млн $ (2023); потери — Украина 7,7%, Дания 4%, Латвия 3,1%; Казахстан 57,1 → 60,4 млн $, Киргизия 7,6 → 17,1.</p><ul class="src"><li><a href="https://www.rbc.ru/industries/news/67334db99a79478394f2cb3f" target="_blank" rel="noopener">РБК Отрасли, ноябрь 2024</a></li></ul></li>
+          <li class="row"><p>Экспорт 2025: рост более 20%.</p><ul class="src"><li><a href="https://www.alta.ru/external_news/128214/" target="_blank" rel="noopener">Альта, май 2026</a></li><li><a href="https://www.vedomosti.ru/business/articles/2025/10/17/1147574-minpromtorg-prorabotaet-meri-podderzhki-eksporta-kosmetiki" target="_blank" rel="noopener">Ведомости, октябрь 2025</a></li></ul></li>
+        </ul>
+      </div>
+
+      <!-- Export -->
+      <div class="topic" id="t-export">
+        <div class="topic-head">
+          <h3>Экспорт и <em>макроцифры</em></h3>
+          <span class="count">3 факта</span>
+        </div>
+        <div style="min-width:0">
+          <ul class="rows">
+            <li class="row"><p>Товарный экспорт России, млрд $: 2021 — 494, 2022 — 592, 2023 — 425, 2024 — 434, 2025 — 420.</p><ul class="src"><li><a href="https://www.focus-economics.com/country-indicator/russia/exports/" target="_blank" rel="noopener">FocusEconomics по данным Банка России</a></li></ul></li>
+            <li class="row"><p>Экспорт 2025: 418,3 млрд $; минеральные продукты 225,3 (53,9%), металлы 74,7, агро 40,9, химия 33,6, машины 29,6.</p><ul class="src"><li><a href="https://habr.com/ru/articles/1008112/" target="_blank" rel="noopener">Хабр, таможенная статистика</a></li></ul></li>
+            <li class="row"><p>Экспорт косметики: Корея 11,4 млрд $ (2025) против России 0,53 млрд $ (2023), разница ≈20 раз.</p><ul class="src"><li class="ref">см. разделы выше</li></ul></li>
+          </ul>
+          <div class="export-chart" aria-label="Товарный экспорт России, млрд долларов, 2021–2025">
+            <span class="label">Товарный экспорт России, млрд $</span>
+            <div class="cols" id="cols" style="margin-top:20px"></div>
+            <div class="col-x" id="cols-x"></div>
+            <p class="cap">Пик 2022 — год высоких цен на сырьё. Минеральные продукты в 2025 — 53,9% экспорта.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budgets & design value -->
+      <div class="topic" id="t-design">
+        <div class="topic-head">
+          <h3>Бюджеты и <em>ценность дизайна</em></h3>
+          <span class="count">8 фактов</span>
+        </div>
+        <ul class="rows">
+          <li class="row"><p>L’Oréal 2024: выручка 43,49 млрд €; себестоимость 11,2 (25,8%); реклама и продвижение 14,0 (32,2%); R&amp;D 1,35 (3,1%); SG&amp;A 8,2 (18,9%); операционная прибыль 8,7 (20,0%); чистая 6,4.</p><ul class="src"><li><a href="https://www.loreal-finance.com/eng/press-release/2024-annual-results" target="_blank" rel="noopener">L’Oréal, годовые результаты 2024</a></li></ul></li>
+          <li class="row"><p>Unilever 2024: оборот 60,76 млрд €; валовая маржа 45,0%; бренд и маркетинг 15,5%; операционная прибыль 9,4 млрд (15,5%); налог 2,5; чистая 6,37.</p><ul class="src"><li><a href="https://www.unilever.com/files/ir-q4-2024-full-announcement.pdf" target="_blank" rel="noopener">Unilever, отчёт 2024</a></li><li><a href="https://www.jamessharp.co.uk/market-news/unilever-plc-2024-final-results/" target="_blank" rel="noopener">Маржи</a></li></ul></li>
+          <li class="row"><p>P&amp;G FY2024: продажи 84,04 млрд $; себестоимость 40,85 (48,6%); SG&amp;A 23,3 (27,7%); операционная прибыль 18,5 (22,1%); налог 3,79; чистая 14,97.</p><ul class="src"><li><a href="https://www.stock-analysis-on.net/NYSE/Company/Procter-Gamble-Co/Financial-Statement/Income-Statement" target="_blank" rel="noopener">P&amp;G FY2024</a></li></ul></li>
+          <li class="row"><p>Nike FY2024: выручка 51,36 млрд $; себестоимость 28,48 (55,4%); реклама (demand creation) 4,29 (8,3%); операционные расходы 12,29 (23,9%); налог 1,0; чистая 5,7.</p><ul class="src"><li><a href="https://s1.q4cdn.com/806093406/files/doc_financials/2024/q4/FY24-Q4-Combined-Schedules-FINAL.pdf" target="_blank" rel="noopener">Nike FY2024</a></li></ul></li>
+          <li class="row"><p>Apple FY2024: продажи 391,0 млрд $; себестоимость 210,4 (53,8%); R&amp;D 31,4 (8,0%); SG&amp;A 26,1 (6,7%); операционная прибыль 123,2 (31,5%); налог 29,7; чистая 93,7.</p><ul class="src"><li><a href="https://www.apple.com/newsroom/pdfs/fy2024-q4/FY24_Q4_Consolidated_Financial_Statements.pdf" target="_blank" rel="noopener">Apple FY2024</a></li></ul></li>
+          <li class="row"><p>Gartner CMO Spend Survey 2025: маркетинг 7,7% выручки; закупка рекламы 30,6% бюджета; 402 CMO, США и Европа.</p><ul class="src"><li><a href="https://www.gartner.com/en/newsroom/press-releases/2025-05-12-gartner-2025-cmo-spend-survey-reveals-marketing-budgets-have-flatlined-at-seven-percent-of-overall-company-revenue" target="_blank" rel="noopener">Gartner</a></li></ul></li>
+          <li class="row"><p>McKinsey, The Business Value of Design (2018): 300 компаний, 5 лет, 3 отрасли; верхняя четверть: +32 п. п. роста выручки, +56 п. п. доходности. Авторы пишут о корреляции.</p><ul class="src"><li><a href="https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/the-business-value-of-design" target="_blank" rel="noopener">McKinsey</a></li></ul></li>
+          <li class="row"><p>DMI Design Value Index (2015): 16 компаний (Apple, Coca-Cola, Ford, Herman Miller, IBM, Intuit, Nike, P&amp;G, SAP, Starbucks, Starwood, Stanley Black &amp; Decker, Steelcase, Target, Disney, Whirlpool); +211% к S&amp;P 500 за 2005–2015; критерий отбора — растущие инвестиции в дизайн.</p><ul class="src"><li><a href="https://cdn.ymaws.com/www.dmi.org/resource/resmgr/design_value_index/16274RAE04.pdf" target="_blank" rel="noopener">DMI, PDF</a></li></ul></li>
+          <li class="row"><p>Juicero: 120 млн $ инвестиций, цена 699 $ (потом 399), дизайн Fuseproject (Ив Бехар). Bloomberg, апрель 2017: пакеты выжимаются руками. Продажи остановлены 1 сентября 2017.</p><ul class="src"><li><a href="https://en.wikipedia.org/wiki/Juicero" target="_blank" rel="noopener">Wikipedia</a></li></ul></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="outro reveal">Дизайн такой,<br>потому что <em>рынок такой</em></p>
+    <div class="foot-row">
+      <span>Источники к выступлению «Почему дизайн такой» · 4 октября 2026 · @a</span>
+      <a href="#top">Наверх ↑</a>
+    </div>
+  </div>
+</footer>
+
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fmt = function (v, dec) {
+    return v.toLocaleString('ru-RU', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  };
+
+  /* ---------- revenue chart data ---------- */
+  var companies = [
+    { name: 'L’Oréal', meta: '2024 · 43,49 млрд €', cur: '€', rev: 43.49, net: '6,4',
+      seg: { cost: [25.8, '11,2'], mkt: [32.2, '14,0', 'Реклама и продвижение'], other: [22.0, '9,55', 'R&D 3,1% + SG&A 18,9%'], profit: [20.0, '8,7'] } },
+    { name: 'Unilever', meta: '2024 · 60,76 млрд €', cur: '€', rev: 60.76, net: '6,37',
+      seg: { cost: [55.0, null, '100% − валовая маржа 45,0%'], mkt: [15.5, null, 'Бренд и маркетинг'], other: [14.0, null, 'Остаток до 100%, расчёт'], profit: [15.5, '9,4'] } },
+    { name: 'Nike', meta: 'FY2024 · 51,36 млрд $', cur: '$', rev: 51.36, net: '5,7',
+      seg: { cost: [55.4, '28,48'], mkt: [8.3, '4,29', 'Demand creation'], other: [23.9, '12,29', 'Операционные расходы'], profit: [12.4, null, 'Остаток до 100%, расчёт'] } },
+    { name: 'P&G', meta: 'FY2024 · 84,04 млрд $', cur: '$', rev: 84.04, net: '14,97', note: 'Реклама входит в SG&A и отдельно не показана',
+      seg: { cost: [48.6, '40,85'], other: [29.3, null, 'SG&A 27,7% и прочее 1,6%'], profit: [22.1, '18,5'] } },
+    { name: 'Apple', meta: 'FY2024 · 391,0 млрд $', cur: '$', rev: 391.0, net: '93,7', note: 'Реклама входит в SG&A и отдельно не показана',
+      seg: { cost: [53.8, '210,4'], other: [14.7, '57,5', 'R&D 8,0% + SG&A 6,7%'], profit: [31.5, '123,2'] } }
+  ];
+  var names = { cost: 'Себестоимость', mkt: 'Маркетинг и реклама', other: 'Прочие расходы', profit: 'Операционная прибыль' };
+  var order = ['cost', 'mkt', 'other', 'profit'];
+  var rev = document.getElementById('rev');
+  var tbody = document.getElementById('rev-table');
+
+  companies.forEach(function (c) {
+    var row = document.createElement('div');
+    row.className = 'rev-row';
+    row.innerHTML = '<div class="rev-name"><b>' + c.name.replace('&', '&amp;') + '</b><span class="num">' + c.meta + '</span></div>';
+    var bar = document.createElement('div');
+    bar.className = 'rev-bar';
+    bar.setAttribute('role', 'img');
+    var aria = [];
+    order.forEach(function (k) {
+      var s = c.seg[k];
+      if (!s) return;
+      var el = document.createElement('div');
+      el.className = 'seg grow' + (s[0] < 9 ? ' narrow' : '');
+      el.dataset.k = k;
+      el.style.flex = s[0] + ' 1 0';
+      el.tabIndex = 0;
+      el.innerHTML = '<span class="num">' + fmt(s[0], 1) + '%</span>';
+      var amount = s[1] ? s[1] + ' млрд ' + c.cur : '';
+      el.dataset.tip = '<b>' + names[k] + ' · ' + fmt(s[0], 1) + '%</b>' +
+        (amount ? '<span>' + amount + '</span>' : '') + (s[2] ? (amount ? '<br>' : '') + '<span>' + s[2].replace('&', '&amp;') + '</span>' : '');
+      aria.push(names[k] + ' ' + fmt(s[0], 1) + '%');
+      bar.appendChild(el);
+    });
+    bar.setAttribute('aria-label', c.name + ': ' + aria.join(', '));
+    row.appendChild(bar);
+    if (c.note) {
+      var n = document.createElement('p');
+      n.className = 'rev-note';
+      n.textContent = c.note;
+      row.appendChild(n);
+    }
+    rev.appendChild(row);
+
+    var cell = function (k) { var s = c.seg[k]; return s ? fmt(s[0], 1) + '%' : 'в SG&amp;A'; };
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + c.name.replace('&', '&amp;') + '</td><td>' + fmt(c.rev, 2) + ' млрд ' + c.cur + '</td><td>' + cell('cost') + '</td><td>' +
+      cell('mkt') + '</td><td>' + cell('other') + '</td><td>' + cell('profit') + '</td><td>' + c.net + ' млрд ' + c.cur + '</td>';
+    tbody.appendChild(tr);
+  });
+
+  /* ---------- export columns ---------- */
+  var exp = [[2021, 494], [2022, 592], [2023, 425], [2024, 434], [2025, 420]];
+  var cols = document.getElementById('cols');
+  var colsX = document.getElementById('cols-x');
+  var max = 600;
+  exp.forEach(function (d) {
+    var col = document.createElement('div');
+    col.className = 'col' + (d[0] === 2022 ? ' peak' : '');
+    col.dataset.tip = '<b>' + d[0] + '</b><span>' + d[1] + ' млрд $ товарного экспорта</span>';
+    col.tabIndex = 0;
+    col.innerHTML = '<b class="num">' + d[1] + '</b><i class="grow-y" style="height:' + (d[1] / max * 100 * 0.82).toFixed(2) + '%"></i>';
+    cols.appendChild(col);
+    var x = document.createElement('span');
+    x.className = 'num';
+    x.textContent = d[0];
+    colsX.appendChild(x);
+  });
+
+  /* ---------- tooltip ---------- */
+  var tip = document.getElementById('tip');
+  var active = null;
+  function place(x, y) {
+    var w = tip.offsetWidth, h = tip.offsetHeight;
+    var left = Math.min(Math.max(12, x + 16), window.innerWidth - w - 12);
+    var top = y - h - 14;
+    if (top < 12) top = y + 20;
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+  function show(el, x, y) {
+    if (active) active.classList.remove('is-on');
+    active = el;
+    el.classList.add('is-on');
+    tip.innerHTML = el.dataset.tip;
+    tip.classList.add('on');
+    place(x, y);
+  }
+  function hide() {
+    tip.classList.remove('on');
+    if (active) active.classList.remove('is-on');
+    active = null;
+  }
+  document.querySelectorAll('[data-tip]').forEach(function (el) {
+    el.addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse') show(el, e.clientX, e.clientY); });
+    el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hide(); });
+    el.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (active === el) { hide(); return; }
+      show(el, e.clientX, e.clientY);
+    });
+    el.addEventListener('focus', function () { var r = el.getBoundingClientRect(); show(el, r.left + r.width / 2, r.top); });
+    el.addEventListener('blur', hide);
+  });
+  document.addEventListener('click', hide);
+  window.addEventListener('scroll', function () { if (active) hide(); }, { passive: true });
+
+  /* ---------- scroll: progress, header, chips ---------- */
+  var root = document.documentElement;
+  var top = document.querySelector('.top');
+  var chipsBar = document.querySelector('.chips-bar');
+  var lastY = window.scrollY;
+  function onScroll() {
+    var y = window.scrollY;
+    var p = y / Math.max(1, root.scrollHeight - window.innerHeight);
+    root.style.setProperty('--p', p.toFixed(4));
+    var chipsStuck = chipsBar.getBoundingClientRect().top <= 1;
+    top.classList.toggle('is-hidden', (y > lastY && y > 200) || chipsStuck);
+    lastY = y;
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  var chipLinks = Array.prototype.slice.call(document.querySelectorAll('.chips a'));
+  var chipsNav = document.querySelector('.chips');
+  if ('IntersectionObserver' in window) {
+    var topicIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        chipLinks.forEach(function (a) {
+          var on = a.getAttribute('href') === '#' + e.target.id;
+          a.classList.toggle('is-on', on);
+          if (on) chipsNav.scrollTo({ left: a.offsetLeft - 24, behavior: reduce ? 'auto' : 'smooth' });
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('.topic').forEach(function (t) { topicIO.observe(t); });
+  }
+
+  /* ---------- pointer glow ---------- */
+  if (!reduce && window.matchMedia('(hover: hover)').matches) {
+    var raf = 0, mx = 0, my = 0;
+    window.addEventListener('pointermove', function (e) {
+      mx = e.clientX; my = e.clientY;
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        root.style.setProperty('--mx', mx + 'px');
+        root.style.setProperty('--my', my + 'px');
+        raf = 0;
+      });
+    }, { passive: true });
+  }
+
+  /* ---------- scroll-in animation (content is complete at rest; motion only plays as it enters) ---------- */
+  if (reduce || !('IntersectionObserver' in window) || !Element.prototype.animate) return;
+
+  var E = 'cubic-bezier(.2,.7,.1,1)';
+  function countUp(el) {
+    var to = parseFloat(el.dataset.count);
+    var from = el.dataset.from ? parseFloat(el.dataset.from) : 0;
+    var dec = parseInt(el.dataset.dec || '0', 10);
+    var plain = el.dataset.plain === '1';
+    var final = el.innerHTML;
+    var t0 = performance.now(), dur = 1800;
+    function tick(t) {
+      var k = Math.min(1, (t - t0) / dur);
+      var e = 1 - Math.pow(1 - k, 4);
+      var v = from + (to - from) * e;
+      el.textContent = plain ? String(Math.round(v)) : fmt(dec ? v : Math.round(v), dec);
+      if (k < 1) requestAnimationFrame(tick); else el.innerHTML = final;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function play(el) {
+    if (el.classList.contains('fact')) {
+      var parts = el.querySelectorAll('.fact-no, .figure, .fact-body > *');
+      parts.forEach(function (p, i) {
+        p.animate([{ opacity: 0, transform: 'translateY(36px)' }, { opacity: 1, transform: 'none' }],
+          { duration: 1100, delay: 80 * i, easing: E, fill: 'backwards' });
+      });
+      el.querySelectorAll('[data-count]').forEach(countUp);
+      el.querySelectorAll('.mini-bar i').forEach(function (b, i) {
+        b.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 1400, delay: 400 + 150 * i, easing: E, fill: 'backwards' });
+      });
+      drawLine(el);
+    } else if (el.classList.contains('topic')) {
+      drawLine(el);
+      el.querySelectorAll('.topic-head > *, .row').forEach(function (r, i) {
+        r.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }],
+          { duration: 900, delay: Math.min(i, 8) * 60, easing: E, fill: 'backwards' });
+      });
+      el.querySelectorAll('.grow-y').forEach(function (b, i) {
+        b.animate([{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }], { duration: 1200, delay: 300 + 90 * i, easing: E, fill: 'backwards' });
+      });
+    } else if (el.classList.contains('rev-row')) {
+      el.querySelectorAll('.seg').forEach(function (s, i) {
+        s.animate([{ transform: 'scaleX(0)', opacity: 0 }, { transform: 'scaleX(1)', opacity: 1 }],
+          { duration: 900, delay: 120 * i, easing: E, fill: 'backwards' });
+      });
+    } else {
+      el.animate([{ opacity: 0, transform: 'translateY(40px)' }, { opacity: 1, transform: 'none' }], { duration: 1200, easing: E, fill: 'backwards' });
+      el.querySelectorAll('[data-count]').forEach(countUp);
+      el.querySelectorAll('.grow').forEach(function (b) {
+        b.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 1800, delay: 200, easing: E, fill: 'backwards' });
+      });
+    }
+  }
+  function drawLine(el) {
+    var line = document.createElement('span');
+    line.setAttribute('aria-hidden', 'true');
+    line.style.cssText = 'position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--fg);transform-origin:0 50%;pointer-events:none';
+    el.appendChild(line);
+    line.animate([{ transform: 'scaleX(0)', opacity: 1 }, { transform: 'scaleX(1)', opacity: 1 }, { transform: 'scaleX(1)', opacity: 0 }],
+      { duration: 1800, easing: E, fill: 'forwards' }).onfinish = function () { line.remove(); };
+  }
+
+  var targets = document.querySelectorAll('.fact, .reveal, .vbar, .rev-row, .topic');
+  var vh = window.innerHeight;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      play(e.target);
+    });
+  }, { rootMargin: '0px 0px 0px 0px', threshold: 0 });
+  targets.forEach(function (t) {
+    // Only animate what starts below the first screen; the opening view is never hidden.
+    if (t.getBoundingClientRect().top > vh) io.observe(t);
+  });
+})();
+</script>
+</body>
+</html>
