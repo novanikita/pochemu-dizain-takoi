@@ -8,19 +8,17 @@
 <meta name="theme-color" content="#000000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..700;1,5..1200,300..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Spectral:wght@400;600&display=swap">
 <style>
-/* Layout: one calm column; the document's tables are the page. */
+/* Two text styles only: headings in Playfair Display, everything else in Spectral. */
 :root {
   --bg: #000000;
   --fg: #DBE4F0;
-  --fg-2: #98A1AF;
-  --fg-3: #5F6773;
-  --line: rgba(219, 228, 240, .16);
-  --line-2: rgba(219, 228, 240, .08);
-  --row-hover: rgba(219, 228, 240, .035);
-  --serif: "Playfair", "Playfair Display", Georgia, "Times New Roman", serif;
-  --max: 1080px;
+  --line: rgba(219, 228, 240, .18);
+  --line-2: rgba(219, 228, 240, .09);
+  --head: "Playfair Display", Georgia, "Times New Roman", serif;
+  --text: "Spectral", Georgia, "Times New Roman", serif;
+  --max: 1000px;
   --gutter: clamp(16px, 5vw, 48px);
   color-scheme: dark;
 }
@@ -30,14 +28,31 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* style 1: heading */
+h1, h2, h3 {
+  margin: 0;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(26px, 3.4vw, 34px);
+  line-height: 1.2;
+  text-wrap: balance;
+  scroll-margin-top: 24px;
+}
+
+/* style 2: text */
+p, td, th, footer {
+  font-family: var(--text);
+  font-weight: 400;
   font-size: 17px;
   line-height: 1.6;
   font-variant-numeric: lining-nums;
-  font-optical-sizing: auto;
-  -webkit-font-smoothing: antialiased;
 }
-a { color: inherit; }
+
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; transition: text-decoration-color .25s; }
+a:hover { text-decoration-color: var(--fg); }
 ::selection { background: var(--fg); color: var(--bg); }
 :focus-visible { outline: 1px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
 
@@ -45,64 +60,41 @@ a { color: inherit; }
   max-width: var(--max);
   margin-inline: auto;
   padding-inline: var(--gutter);
-  padding-block: calc(clamp(56px, 10vw, 112px) + env(safe-area-inset-top, 0px)) calc(64px + env(safe-area-inset-bottom, 0px));
+  padding-block: calc(clamp(56px, 10vw, 104px) + env(safe-area-inset-top, 0px)) calc(56px + env(safe-area-inset-bottom, 0px));
 }
+header { display: grid; gap: 10px; padding-bottom: 40px; border-bottom: 1px solid var(--line); }
+header p { margin: 0; max-width: 46ch; }
 
-/* header */
-header { display: grid; gap: 20px; padding-bottom: clamp(40px, 6vw, 64px); border-bottom: 1px solid var(--line); }
-h1 { margin: 0; font-size: clamp(44px, 8vw, 88px); font-weight: 400; line-height: 1; letter-spacing: -.02em; }
-.lede { margin: 0; max-width: 46ch; font-size: 20px; line-height: 1.5; color: var(--fg-2); font-style: italic; }
+section { padding-top: 72px; }
+h3 { margin-top: 56px; }
+h2 + h3 { margin-top: 40px; }
+h2 + .table, h3 + .table { margin-top: 20px; }
 
-/* sections */
-section { padding-top: clamp(56px, 8vw, 88px); }
-h2 { margin: 0 0 24px; font-size: clamp(28px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -.01em; }
-h2 em { font-style: italic; color: var(--fg-2); }
-h3 { margin: 48px 0 14px; font-size: 22px; font-weight: 400; font-style: italic; scroll-margin-top: 24px; }
+.table { width: 100%; border-collapse: collapse; }
+.table th { text-align: left; padding: 0 0 10px; border-bottom: 1px solid var(--line); }
+.table td { vertical-align: top; padding: 16px 0; border-bottom: 1px solid var(--line-2); }
+.table th:first-child, .table td:first-child { width: 64%; padding-right: 40px; }
+.table td strong { font-weight: 600; }
+.table tbody tr { transition: background .25s; }
+.table tbody tr:hover { background: rgba(219, 228, 240, .03); }
 
-/* table */
-.table { width: 100%; border-collapse: collapse; font-variant-numeric: lining-nums tabular-nums; }
-.table th {
-  text-align: left; font-weight: 500; font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--fg-3); padding: 0 0 12px; border-bottom: 1px solid var(--line);
-}
-.table td { vertical-align: top; padding: 18px 0; border-bottom: 1px solid var(--line-2); }
-.table th:first-child, .table td:first-child { padding-right: 40px; }
-.table td:first-child { width: 64%; }
-.table tr { transition: background .25s; }
-.table tbody tr:hover { background: var(--row-hover); }
-.table td strong { font-weight: 600; display: block; margin-bottom: 4px; }
-.table .src { font-size: 15px; color: var(--fg-2); line-height: 1.5; }
-.src a {
-  text-decoration: none; color: var(--fg-2);
-  background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1px;
-  background-repeat: no-repeat; background-position: 0 100%;
-  transition: color .25s;
-}
-.src a:hover { color: var(--fg); }
-.src .sep { color: var(--fg-3); margin-inline: 6px; }
-.src em { color: var(--fg-3); }
-
-footer { margin-top: clamp(64px, 9vw, 104px); padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; color: var(--fg-3); font-size: 14px; }
-footer a { color: var(--fg-2); text-decoration: none; }
-footer a:hover { color: var(--fg); }
+footer { margin-top: 88px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
 
 /* motion: a quiet fade on load, rows follow in order */
 @keyframes up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 header > * { animation: up .9s cubic-bezier(.2, .7, .2, 1) both; }
-header > *:nth-child(2) { animation-delay: .08s; }
+header > *:nth-child(2) { animation-delay: .1s; }
 .table tbody tr { animation: up .8s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(.3s + var(--i, 0) * .05s); }
 
 /* phone: each row becomes a stacked entry */
 @media (max-width: 680px) {
-  body { font-size: 16px; }
-  .lede { font-size: 17px; }
+  p, td, th, footer { font-size: 16px; }
   .table thead { display: none; }
   .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
-  .table tr { padding: 16px 0; border-bottom: 1px solid var(--line-2); }
+  .table tr { padding: 14px 0; border-bottom: 1px solid var(--line-2); }
   .table tbody tr:first-child { border-top: 1px solid var(--line); }
-  .table td { padding: 0; border: 0; }
-  .table td:first-child { width: 100%; padding-right: 0; margin-bottom: 8px; }
-  .table .src { font-size: 14px; }
+  .table td, .table td:first-child { padding: 0; border: 0; width: 100%; }
+  .table td + td { margin-top: 6px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -116,40 +108,40 @@ header > *:nth-child(2) { animation-delay: .08s; }
 
   <header>
     <h1>Источники</h1>
-    <p class="lede">Факты, которые я использовала в выступлении, и немного дополнительной информации</p>
+    <p>Факты, которые я использовала в выступлении, и немного дополнительной информации</p>
   </header>
 
   <section id="b1">
-    <h2>Блок 1. <em>Используется в выступлении</em></h2>
+    <h2>Блок 1. Используется в выступлении</h2>
     <table class="table">
       <thead><tr><th>Факт</th><th>Источник</th></tr></thead>
       <tbody>
         <tr>
-          <td><strong>Южная Корея — 2-е место в мире по экспорту косметики после Франции.</strong>11,4 млрд $ в 2025, +11,8%, обогнала США; 202 страны-покупателя. Данные MFDS, май 2026</td>
-          <td class="src"><a href="https://www.koreabiomed.com/news/articleView.html?idxno=31790" target="_blank" rel="noopener">Korea Biomedical Review</a><span class="sep">·</span><a href="https://www.upi.com/Top_News/World-News/2026/05/28/korea-korea-global-comsetics-exports/5231779966752/" target="_blank" rel="noopener">UPI</a><span class="sep">·</span><a href="https://en.reach24h.com/news/insights/cosmetic/south-korea-2025-cosmetics-export-data-insights" target="_blank" rel="noopener">MFDS / REACH24H</a></td>
+          <td><strong>Южная Корея — 2-е место в мире по экспорту косметики после Франции.</strong> 11,4 млрд $ в 2025, +11,8%, обогнала США; 202 страны-покупателя. Данные MFDS, май 2026</td>
+          <td class="src"><a href="https://www.koreabiomed.com/news/articleView.html?idxno=31790" target="_blank" rel="noopener">Korea Biomedical Review</a> · <a href="https://www.upi.com/Top_News/World-News/2026/05/28/korea-korea-global-comsetics-exports/5231779966752/" target="_blank" rel="noopener">UPI</a> · <a href="https://en.reach24h.com/news/insights/cosmetic/south-korea-2025-cosmetics-export-data-insights" target="_blank" rel="noopener">MFDS / REACH24H</a></td>
         </tr>
         <tr>
-          <td><strong>Маркетинг — 7,7% выручки компании.</strong>2025, без изменений к 2024. Опрос 402 CMO, США, Великобритания, Европа, компании с выручкой выше 1 млрд $; 30,6% бюджета — закупка рекламы</td>
+          <td><strong>Маркетинг — 7,7% выручки компании.</strong> 2025, без изменений к 2024. Опрос 402 CMO, США, Великобритания, Европа, компании с выручкой выше 1 млрд $; 30,6% бюджета — закупка рекламы</td>
           <td class="src"><a href="https://www.gartner.com/en/newsroom/press-releases/2025-05-12-gartner-2025-cmo-spend-survey-reveals-marketing-budgets-have-flatlined-at-seven-percent-of-overall-company-revenue" target="_blank" rel="noopener">Gartner CMO Spend Survey 2025</a></td>
         </tr>
         <tr>
-          <td><strong>Уход иностранных брендов = закрытый рынок.</strong>До 2022 иностранные бренды держали 70% рынка (INFOLine). Март 2022: L’Oréal закрыл магазины и корнеры, Estée Lauder остановил поставки, Sephora закрыла магазины с 8 марта, Unilever остановил импорт и рекламу. Рынок в 2022 сжался на 14%, цены на импорт +30–60%, спрос на российскую косметику в «Лэтуаль» +184% за год, доля покупок российской косметики 27% → 39% за осень 2022. Санкции косметику не запрещали, бренды ушли сами</td>
-          <td class="src"><a href="https://www.gcimagazine.com/companies/news/22105888/update-sephora-este-lauder-loral-jj-unilever-cease-operations-in-russia" target="_blank" rel="noopener">GCI Magazine</a><span class="sep">·</span><a href="https://interfax.com/newsroom/top-stories/75995/" target="_blank" rel="noopener">Interfax</a><span class="sep">·</span><a href="https://rb.ru/longread/beauty-in-russia-23/" target="_blank" rel="noopener">RB.RU</a><span class="sep">·</span><a href="https://tass.ru/ekonomika/17242267" target="_blank" rel="noopener">ТАСС</a></td>
+          <td><strong>Уход иностранных брендов = закрытый рынок.</strong> До 2022 иностранные бренды держали 70% рынка (INFOLine). Март 2022: L’Oréal закрыл магазины и корнеры, Estée Lauder остановил поставки, Sephora закрыла магазины с 8 марта, Unilever остановил импорт и рекламу. Рынок в 2022 сжался на 14%, цены на импорт +30–60%, спрос на российскую косметику в «Лэтуаль» +184% за год, доля покупок российской косметики 27% → 39% за осень 2022. Санкции косметику не запрещали, бренды ушли сами</td>
+          <td class="src"><a href="https://www.gcimagazine.com/companies/news/22105888/update-sephora-este-lauder-loral-jj-unilever-cease-operations-in-russia" target="_blank" rel="noopener">GCI Magazine</a> · <a href="https://interfax.com/newsroom/top-stories/75995/" target="_blank" rel="noopener">Interfax</a> · <a href="https://rb.ru/longread/beauty-in-russia-23/" target="_blank" rel="noopener">RB.RU</a> · <a href="https://tass.ru/ekonomika/17242267" target="_blank" rel="noopener">ТАСС</a></td>
         </tr>
         <tr>
-          <td><strong>Российских брендов косметики: 1 100 в 2022 → 3 000 в 2026.</strong>Аналитики «Золотого яблока» (бренды в сети), сентябрь 2026. РПКА подтверждает: число российских брендов удвоилось за 2022–2024</td>
-          <td class="src"><a href="https://finance.mail.ru/article/chislo-rossijskih-brendov-kosmetiki-vyroslo-v-tri-raza-s-2022-goda-69225614/" target="_blank" rel="noopener">Финансы Mail</a><span class="sep">·</span><a href="https://www.sostav.ru/publication/chislo-otechestvennykh-brendov-kosmetiki-vyroslo-v-dva-raza-70620.html" target="_blank" rel="noopener">Sostav</a></td>
+          <td><strong>Российских брендов косметики: 1 100 в 2022 → 3 000 в 2026.</strong> Аналитики «Золотого яблока» (бренды в сети), сентябрь 2026. РПКА подтверждает: число российских брендов удвоилось за 2022–2024</td>
+          <td class="src"><a href="https://finance.mail.ru/article/chislo-rossijskih-brendov-kosmetiki-vyroslo-v-tri-raza-s-2022-goda-69225614/" target="_blank" rel="noopener">Финансы Mail</a> · <a href="https://www.sostav.ru/publication/chislo-otechestvennykh-brendov-kosmetiki-vyroslo-v-dva-raza-70620.html" target="_blank" rel="noopener">Sostav</a></td>
         </tr>
         <tr>
-          <td><strong>Корея, 10 мая 1961: запрет продажи иностранных товаров.</strong>Закон о запрете продажи отдельных иностранных товаров — 19 категорий, включая косметику; цель — защита своей промышленности и экономия валюты. Отменён 31 декабря 1982. «Около 1961 корейская косметическая индустрия начала процветать после принятия закона»</td>
-          <td class="src"><a href="https://en.namu.wiki/w/%ED%8A%B9%EC%A0%95%EC%99%B8%EB%9E%98%ED%92%88%ED%8C%90%EB%A7%A4%EA%B8%88%EC%A7%80%EB%B2%95" target="_blank" rel="noopener">Namu Wiki: закон и даты</a><span class="sep">·</span><a href="https://en.wikipedia.org/wiki/Cosmetics_in_Korea" target="_blank" rel="noopener">Wikipedia: Cosmetics in Korea</a><span class="sep">·</span><a href="https://seoulinstitute.com/how-k-beauty-became-a-global-export-power/" target="_blank" rel="noopener">Seoul Institute</a></td>
+          <td><strong>Корея, 10 мая 1961: запрет продажи иностранных товаров.</strong> Закон о запрете продажи отдельных иностранных товаров — 19 категорий, включая косметику; цель — защита своей промышленности и экономия валюты. Отменён 31 декабря 1982. «Около 1961 корейская косметическая индустрия начала процветать после принятия закона»</td>
+          <td class="src"><a href="https://en.namu.wiki/w/%ED%8A%B9%EC%A0%95%EC%99%B8%EB%9E%98%ED%92%88%ED%8C%90%EB%A7%A4%EA%B8%88%EC%A7%80%EB%B2%95" target="_blank" rel="noopener">Namu Wiki: закон и даты</a> · <a href="https://en.wikipedia.org/wiki/Cosmetics_in_Korea" target="_blank" rel="noopener">Wikipedia: Cosmetics in Korea</a> · <a href="https://seoulinstitute.com/how-k-beauty-became-a-global-export-power/" target="_blank" rel="noopener">Seoul Institute</a></td>
         </tr>
       </tbody>
     </table>
   </section>
 
   <section id="b2">
-    <h2>Блок 2. <em>Остальные факты исследования</em></h2>
+    <h2>Блок 2. Остальные факты исследования</h2>
 
     <h3 id="korea">Корея: косметика</h3>
     <table class="table">
@@ -189,7 +181,7 @@ header > *:nth-child(2) { animation-delay: .08s; }
         <tr><td>Число российских брендов удвоилось за 2022–2024; всего ≈ 32 000 марок на рынке; 120 000 новых наименований в 2024</td><td class="src"><a href="https://www.sostav.ru/publication/chislo-otechestvennykh-brendov-kosmetiki-vyroslo-v-dva-raza-70620.html" target="_blank" rel="noopener">РПКА через Sostav</a></td></tr>
         <tr><td>Январь 2022 → февраль 2023: «Золотое яблоко» брендов +98,5%; «Рив Гош» +100 российских марок, доля до ≈20%; «Лэтуаль» 800 новых брендов, 200 российских</td><td class="src"><a href="https://tass.ru/ekonomika/17242267" target="_blank" rel="noopener">ТАСС, март 2023</a></td></tr>
         <tr><td>Экспорт косметики: 801,5 млн $ (2021) → 529,4 млн $ (2023); потери — Украина 7,7%, Дания 4%, Латвия 3,1%; Казахстан 57,1 → 60,4 млн $, Киргизия 7,6 → 17,1</td><td class="src"><a href="https://www.rbc.ru/industries/news/67334db99a79478394f2cb3f" target="_blank" rel="noopener">РБК Отрасли, ноябрь 2024</a></td></tr>
-        <tr><td>Экспорт 2025: рост более 20%</td><td class="src"><a href="https://www.alta.ru/external_news/128214/" target="_blank" rel="noopener">Альта, май 2026</a><span class="sep">·</span><a href="https://www.vedomosti.ru/business/articles/2025/10/17/1147574-minpromtorg-prorabotaet-meri-podderzhki-eksporta-kosmetiki" target="_blank" rel="noopener">Ведомости, октябрь 2025</a></td></tr>
+        <tr><td>Экспорт 2025: рост более 20%</td><td class="src"><a href="https://www.alta.ru/external_news/128214/" target="_blank" rel="noopener">Альта, май 2026</a> · <a href="https://www.vedomosti.ru/business/articles/2025/10/17/1147574-minpromtorg-prorabotaet-meri-podderzhki-eksporta-kosmetiki" target="_blank" rel="noopener">Ведомости, октябрь 2025</a></td></tr>
       </tbody>
     </table>
 
@@ -199,7 +191,7 @@ header > *:nth-child(2) { animation-delay: .08s; }
       <tbody>
         <tr><td>Товарный экспорт России, млрд $: 2021 — 494, 2022 — 592, 2023 — 425, 2024 — 434, 2025 — 420</td><td class="src"><a href="https://www.focus-economics.com/country-indicator/russia/exports/" target="_blank" rel="noopener">FocusEconomics по данным Банка России</a></td></tr>
         <tr><td>Экспорт 2025: 418,3 млрд $; минеральные продукты 225,3 (53,9%), металлы 74,7, агро 40,9, химия 33,6, машины 29,6</td><td class="src"><a href="https://habr.com/ru/articles/1008112/" target="_blank" rel="noopener">Хабр, таможенная статистика</a></td></tr>
-        <tr><td>Экспорт косметики: Корея 11,4 млрд $ (2025) против России 0,53 млрд $ (2023), разница ≈ 20 раз</td><td class="src"><em>см. разделы выше</em></td></tr>
+        <tr><td>Экспорт косметики: Корея 11,4 млрд $ (2025) против России 0,53 млрд $ (2023), разница ≈ 20 раз</td><td class="src">см. разделы выше</td></tr>
       </tbody>
     </table>
 
@@ -208,7 +200,7 @@ header > *:nth-child(2) { animation-delay: .08s; }
       <thead><tr><th>Факт</th><th>Источник</th></tr></thead>
       <tbody>
         <tr><td>L’Oréal 2024: выручка 43,49 млрд €; себестоимость 11,2 (25,8%); реклама и продвижение 14,0 (32,2%); R&amp;D 1,35 (3,1%); SG&amp;A 8,2 (18,9%); операционная прибыль 8,7 (20,0%); чистая 6,4</td><td class="src"><a href="https://www.loreal-finance.com/eng/press-release/2024-annual-results" target="_blank" rel="noopener">L’Oréal, годовые результаты 2024</a></td></tr>
-        <tr><td>Unilever 2024: оборот 60,76 млрд €; валовая маржа 45,0%; бренд и маркетинг 15,5%; операционная прибыль 9,4 млрд (15,5%); налог 2,5; чистая 6,37</td><td class="src"><a href="https://www.unilever.com/files/ir-q4-2024-full-announcement.pdf" target="_blank" rel="noopener">Unilever, отчёт 2024</a><span class="sep">·</span><a href="https://www.jamessharp.co.uk/market-news/unilever-plc-2024-final-results/" target="_blank" rel="noopener">маржи</a></td></tr>
+        <tr><td>Unilever 2024: оборот 60,76 млрд €; валовая маржа 45,0%; бренд и маркетинг 15,5%; операционная прибыль 9,4 млрд (15,5%); налог 2,5; чистая 6,37</td><td class="src"><a href="https://www.unilever.com/files/ir-q4-2024-full-announcement.pdf" target="_blank" rel="noopener">Unilever, отчёт 2024</a> · <a href="https://www.jamessharp.co.uk/market-news/unilever-plc-2024-final-results/" target="_blank" rel="noopener">маржи</a></td></tr>
         <tr><td>P&amp;G FY2024: продажи 84,04 млрд $; себестоимость 40,85 (48,6%); SG&amp;A 23,3 (27,7%); операционная прибыль 18,5 (22,1%); налог 3,79; чистая 14,97</td><td class="src"><a href="https://www.stock-analysis-on.net/NYSE/Company/Procter-Gamble-Co/Financial-Statement/Income-Statement" target="_blank" rel="noopener">P&amp;G FY2024</a></td></tr>
         <tr><td>Nike FY2024: выручка 51,36 млрд $; себестоимость 28,48 (55,4%); реклама (demand creation) 4,29 (8,3%); операционные расходы 12,29 (23,9%); налог 1,0; чистая 5,7</td><td class="src"><a href="https://s1.q4cdn.com/806093406/files/doc_financials/2024/q4/FY24-Q4-Combined-Schedules-FINAL.pdf" target="_blank" rel="noopener">Nike FY2024</a></td></tr>
         <tr><td>Apple FY2024: продажи 391,0 млрд $; себестоимость 210,4 (53,8%); R&amp;D 31,4 (8,0%); SG&amp;A 26,1 (6,7%); операционная прибыль 123,2 (31,5%); налог 29,7; чистая 93,7</td><td class="src"><a href="https://www.apple.com/newsroom/pdfs/fy2024-q4/FY24_Q4_Consolidated_Financial_Statements.pdf" target="_blank" rel="noopener">Apple FY2024</a></td></tr>
